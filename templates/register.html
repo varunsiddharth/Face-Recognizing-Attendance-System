@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Student - Attendance System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .form-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .camera-section {
+            text-align: center;
+        }
+        
+        .camera-container {
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        #video {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .camera-controls {
+            margin: 20px 0;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: #718096;
+        }
+        
+        .progress-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #48bb78;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .status.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .status.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #feb2b2;
+        }
+        
+        .status.info {
+            background: #bee3f8;
+            color: #2a4365;
+            border: 1px solid #90cdf4;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .instructions {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .instructions h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            color: #4a5568;
+            margin-left: 20px;
+        }
+        
+        .instructions li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-btn">← Back to Home</a>
+            <h1>👤 Register New Student</h1>
+            <p>Capture face images for face recognition training</p>
+        </div>
+        
+        <div class="content">
+            <div class="form-section">
+                <div class="form-group">
+                    <h3>Student Information</h3>
+                    <div class="form-group">
+                        <label for="enrollment">Enrollment Number:</label>
+                        <input type="text" id="enrollment" placeholder="Enter enrollment number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name:</label>
+                        <input type="text" id="name" placeholder="Enter full name" required>
+                    </div>
+                    
+                    <button class="btn" id="startCapture" onclick="startCapture()">Start Image Capture</button>
+                    <button class="btn btn-secondary" id="trainModel" onclick="trainModel()" disabled>Train Model</button>
+                </div>
+                
+                <div class="camera-section">
+                    <h3>Camera Preview</h3>
+                    <div class="camera-container">
+                        <video id="video" autoplay muted></video>
+                        <canvas id="canvas" style="display: none;"></canvas>
+                    </div>
+                    
+                    <div class="camera-controls">
+                        <button class="btn" id="captureBtn" onclick="captureImage()" disabled>Capture Image</button>
+                        <button class="btn btn-secondary" id="stopBtn" onclick="stopCapture()" disabled>Stop Capture</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <h3>Instructions:</h3>
+                <ul>
+                    <li>Enter the student's enrollment number and full name</li>
+                    <li>Click "Start Image Capture" to begin</li>
+                    <li>Position the student in front of the camera</li>
+                    <li>Click "Capture Image" repeatedly to capture 50 images</li>
+                    <li>Ensure good lighting and clear face visibility</li>
+                    <li>After capturing images, click "Train Model" to train the system</li>
+                </ul>
+            </div>
+            
+            <div class="progress-section">
+                <h3>Capture Progress</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p id="progressText">Ready to start capturing images</p>
+            </div>
+            
+            <div id="status"></div>
+        </div>
+    </div>
+
+    <script>
+        let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+        let stream = null;
+        let isCapturing = false;
+        let capturedCount = 0;
+        let targetCount = 50;
+        let currentEnrollment = '';
+        let currentName = '';
+
+        async function startCapture() {
+            const enrollment = document.getElementById('enrollment').value.trim();
+            const name = document.getElementById('name').value.trim();
+            
+            if (!enrollment || !name) {
+                showStatus('Please enter both enrollment number and name', 'error');
+                return;
+            }
+            
+            currentEnrollment = enrollment;
+            currentName = name;
+            
+            try {
+                // Register student first
+                const response = await fetch('/api/capture_images', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        enrollment: enrollment,
+                        name: name
+                    })
+                });
+                
+                const result = await response.json();
+                if (!result.success) {
+                    showStatus(result.message, 'error');
+                    return;
+                }
+                
+                // Start camera
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: 640, 
+                        height: 480,
+                        facingMode: 'user'
+                    } 
+                });
+                
+                video.srcObject = stream;
+                isCapturing = true;
+                capturedCount = 0;
+                
+                document.getElementById('startCapture').disabled = true;
+                document.getElementById('captureBtn').disabled = false;
+                document.getElementById('stopBtn').disabled = false;
+                
+                showStatus('Camera started. Position the student in front of the camera and click "Capture Image" repeatedly.', 'info');
+                updateProgress();
+                
+            } catch (error) {
+                showStatus('Error accessing camera: ' + error.message, 'error');
+            }
+        }
+
+        function captureImage() {
+            if (!isCapturing) return;
+            
+            // Set canvas size to match video
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            // Draw current video frame to canvas
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert to base64
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+            
+            // Send to server
+            fetch('/api/save_image', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    image: imageData,
+                    enrollment: currentEnrollment,
+                    name: currentName,
+                    image_number: capturedCount + 1
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    capturedCount++;
+                    updateProgress();
+                    showStatus(`Image ${capturedCount} captured successfully!`, 'success');
+                    
+                    if (capturedCount >= targetCount) {
+                        stopCapture();
+                        showStatus(`All ${targetCount} images captured! You can now train the model.`, 'success');
+                        document.getElementById('trainModel').disabled = false;
+                    }
+                } else {
+                    showStatus('Error capturing image: ' + result.message, 'error');
+                }
+            })
+            .catch(error => {
+                showStatus('Error: ' + error.message, 'error');
+            });
+        }
+
+        function stopCapture() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            
+            isCapturing = false;
+            video.srcObject = null;
+            
+            document.getElementById('startCapture').disabled = false;
+            document.getElementById('captureBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = true;
+            
+            showStatus('Camera stopped. ' + capturedCount + ' images captured.', 'info');
+        }
+
+        function updateProgress() {
+            const percentage = (capturedCount / targetCount) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = 
+                `Captured: ${capturedCount}/${targetCount} images (${Math.round(percentage)}%)`;
+        }
+
+        async function trainModel() {
+            showStatus('Training model... This may take a few minutes.', 'info');
+            document.getElementById('trainModel').disabled = true;
+            
+            try {
+                const response = await fetch('/api/train_model', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    showStatus(result.message, 'success');
+                } else {
+                    showStatus('Training failed: ' + result.message, 'error');
+                }
+            } catch (error) {
+                showStatus('Error: ' + error.message, 'error');
+            } finally {
+                document.getElementById('trainModel').disabled = false;
+            }
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', function() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        });
+    </script>
+</body>
+</html>

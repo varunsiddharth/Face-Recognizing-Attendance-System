@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Attendance - Attendance System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .form-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .camera-section {
+            text-align: center;
+        }
+        
+        .camera-container {
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        #video {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .camera-controls {
+            margin: 20px 0;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: #718096;
+        }
+        
+        .btn-success {
+            background: #48bb78;
+        }
+        
+        .btn-danger {
+            background: #f56565;
+        }
+        
+        .attendance-log {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #48bb78;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .attendance-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .attendance-item .student-info {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .attendance-item .time {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .status.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .status.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #feb2b2;
+        }
+        
+        .status.info {
+            background: #bee3f8;
+            color: #2a4365;
+            border: 1px solid #90cdf4;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .recognition-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .recognition-overlay.show {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-btn">← Back to Home</a>
+            <h1>📷 Take Attendance</h1>
+            <p>Mark attendance using face recognition</p>
+        </div>
+        
+        <div class="content">
+            <div class="form-section">
+                <div class="form-group">
+                    <h3>Attendance Settings</h3>
+                    <div class="form-group">
+                        <label for="subject">Subject Name:</label>
+                        <input type="text" id="subject" placeholder="Enter subject name" required>
+                    </div>
+                    
+                    <button class="btn" id="startAttendance" onclick="startAttendance()">Start Attendance</button>
+                    <button class="btn btn-secondary" id="stopAttendance" onclick="stopAttendance()" disabled>Stop Attendance</button>
+                </div>
+                
+                <div class="camera-section">
+                    <h3>Face Recognition</h3>
+                    <div class="camera-container">
+                        <video id="video" autoplay muted></video>
+                        <canvas id="canvas" style="display: none;"></canvas>
+                        <div class="recognition-overlay" id="recognitionOverlay">
+                            <div id="recognitionText">Recognizing...</div>
+                        </div>
+                    </div>
+                    
+                    <div class="camera-controls">
+                        <button class="btn btn-success" id="recognizeBtn" onclick="recognizeFace()" disabled>Recognize Face</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="attendance-log">
+                <h3>Attendance Log</h3>
+                <div id="attendanceList">
+                    <p style="color: #718096; text-align: center; margin: 20px 0;">No attendance marked yet</p>
+                </div>
+            </div>
+            
+            <div id="status"></div>
+        </div>
+    </div>
+
+    <script>
+        let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+        let stream = null;
+        let isRunning = false;
+        let attendanceList = [];
+
+        async function startAttendance() {
+            const subject = document.getElementById('subject').value.trim();
+            
+            if (!subject) {
+                showStatus('Please enter subject name', 'error');
+                return;
+            }
+            
+            try {
+                // Start camera
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: 640, 
+                        height: 480,
+                        facingMode: 'user'
+                    } 
+                });
+                
+                video.srcObject = stream;
+                isRunning = true;
+                
+                document.getElementById('startAttendance').disabled = true;
+                document.getElementById('stopAttendance').disabled = false;
+                document.getElementById('recognizeBtn').disabled = false;
+                
+                showStatus('Camera started. Position students in front of the camera and click "Recognize Face" to mark attendance.', 'info');
+                
+            } catch (error) {
+                showStatus('Error accessing camera: ' + error.message, 'error');
+            }
+        }
+
+        function stopAttendance() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            
+            isRunning = false;
+            video.srcObject = null;
+            
+            document.getElementById('startAttendance').disabled = false;
+            document.getElementById('stopAttendance').disabled = true;
+            document.getElementById('recognizeBtn').disabled = true;
+            
+            showStatus('Attendance session stopped.', 'info');
+        }
+
+        async function recognizeFace() {
+            if (!isRunning) return;
+            
+            // Show recognition overlay
+            const overlay = document.getElementById('recognitionOverlay');
+            const text = document.getElementById('recognitionText');
+            overlay.classList.add('show');
+            text.textContent = 'Recognizing...';
+            
+            // Set canvas size to match video
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            // Draw current video frame to canvas
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert to base64
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+            
+            try {
+                // Send to server for recognition
+                const response = await fetch('/api/recognize_face', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        image: imageData
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success && result.recognized) {
+                    // Mark attendance
+                    const subject = document.getElementById('subject').value.trim();
+                    const attendanceResponse = await fetch('/api/mark_attendance', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            subject: subject,
+                            student_id: result.id,
+                            student_name: result.name
+                        })
+                    });
+                    
+                    const attendanceResult = await attendanceResponse.json();
+                    
+                    if (attendanceResult.success) {
+                        // Add to attendance list
+                        const attendanceItem = {
+                            id: result.id,
+                            name: result.name,
+                            time: new Date().toLocaleTimeString(),
+                            confidence: result.confidence
+                        };
+                        
+                        // Check if already marked today
+                        const existingIndex = attendanceList.findIndex(item => 
+                            item.id === attendanceItem.id && 
+                            item.date === new Date().toLocaleDateString()
+                        );
+                        
+                        if (existingIndex === -1) {
+                            attendanceItem.date = new Date().toLocaleDateString();
+                            attendanceList.unshift(attendanceItem);
+                            updateAttendanceList();
+                            showStatus(`Attendance marked for ${result.name}`, 'success');
+                        } else {
+                            showStatus(`${result.name} already marked attendance today`, 'info');
+                        }
+                        
+                        text.textContent = `✓ ${result.name}`;
+                        text.style.color = '#48bb78';
+                    } else {
+                        text.textContent = 'Attendance marking failed';
+                        text.style.color = '#f56565';
+                        showStatus('Failed to mark attendance: ' + attendanceResult.message, 'error');
+                    }
+                } else {
+                    text.textContent = 'Face not recognized';
+                    text.style.color = '#f56565';
+                    showStatus('Face not recognized. Please ensure the person is registered in the system.', 'error');
+                }
+                
+            } catch (error) {
+                text.textContent = 'Recognition failed';
+                text.style.color = '#f56565';
+                showStatus('Error: ' + error.message, 'error');
+            }
+            
+            // Hide overlay after 2 seconds
+            setTimeout(() => {
+                overlay.classList.remove('show');
+            }, 2000);
+        }
+
+        function updateAttendanceList() {
+            const listDiv = document.getElementById('attendanceList');
+            
+            if (attendanceList.length === 0) {
+                listDiv.innerHTML = '<p style="color: #718096; text-align: center; margin: 20px 0;">No attendance marked yet</p>';
+                return;
+            }
+            
+            listDiv.innerHTML = attendanceList.map(item => `
+                <div class="attendance-item">
+                    <div class="student-info">${item.name} (ID: ${item.id})</div>
+                    <div class="time">${item.time}</div>
+                </div>
+            `).join('');
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', function() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        });
+    </script>
+</body>
+</html>
