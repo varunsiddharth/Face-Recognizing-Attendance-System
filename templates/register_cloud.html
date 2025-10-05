@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Student - Cloud Version</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: #718096;
+        }
+        
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .status.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .status.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #feb2b2;
+        }
+        
+        .status.info {
+            background: #bee3f8;
+            color: #2a4365;
+            border: 1px solid #90cdf4;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .warning {
+            background: #fed7d7;
+            color: #742a2a;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #f56565;
+        }
+        
+        .warning h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-btn">← Back to Home</a>
+            <h1>👤 Register Student</h1>
+            <p>Add new students to the system</p>
+        </div>
+        
+        <div class="content">
+            <div class="warning">
+                <h3>⚠️ Cloud Version Notice</h3>
+                <p>This is a cloud-friendly version. Face recognition is not available. Students are registered manually.</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="enrollment">Enrollment Number:</label>
+                <input type="text" id="enrollment" placeholder="Enter enrollment number" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" placeholder="Enter full name" required>
+            </div>
+            
+            <button class="btn" onclick="registerStudent()">Register Student</button>
+            <button class="btn btn-secondary" onclick="viewStudents()">View All Students</button>
+            
+            <div id="status"></div>
+            
+            <div id="studentsList" style="margin-top: 30px;"></div>
+        </div>
+    </div>
+
+    <script>
+        async function registerStudent() {
+            const enrollment = document.getElementById('enrollment').value.trim();
+            const name = document.getElementById('name').value.trim();
+            
+            if (!enrollment || !name) {
+                showStatus('Please enter both enrollment number and name', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/register_student', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        enrollment: enrollment,
+                        name: name
+                    })
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    showStatus(result.message, 'success');
+                    document.getElementById('enrollment').value = '';
+                    document.getElementById('name').value = '';
+                    viewStudents(); // Refresh the list
+                } else {
+                    showStatus(result.message, 'error');
+                }
+            } catch (error) {
+                showStatus('Error: ' + error.message, 'error');
+            }
+        }
+
+        async function viewStudents() {
+            try {
+                const response = await fetch('/api/get_students');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const studentsList = document.getElementById('studentsList');
+                    if (result.students.length === 0) {
+                        studentsList.innerHTML = '<p style="color: #718096; text-align: center;">No students registered yet</p>';
+                    } else {
+                        studentsList.innerHTML = `
+                            <h3>Registered Students (${result.students.length})</h3>
+                            <div style="display: grid; gap: 10px; margin-top: 15px;">
+                                ${result.students.map(student => `
+                                    <div style="background: #f7fafc; padding: 15px; border-radius: 8px; border-left: 4px solid #48bb78;">
+                                        <strong>${student.Name}</strong> (ID: ${student.Enrollment})
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    }
+                } else {
+                    showStatus('Error loading students: ' + result.message, 'error');
+                }
+            } catch (error) {
+                showStatus('Error: ' + error.message, 'error');
+            }
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        // Load students on page load
+        window.addEventListener('load', viewStudents);
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLASS VISION - Cloud Version</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #718096;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .warning {
+            background: #fed7d7;
+            color: #742a2a;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #f56565;
+        }
+        
+        .warning h3 {
+            margin-bottom: 10px;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .menu-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .menu-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .menu-item p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .status {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #48bb78;
+        }
+        
+        .status h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .status p {
+            color: #718096;
+            margin: 5px 0;
+        }
+        
+        .cloud-info {
+            background: #bee3f8;
+            color: #2a4365;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .cloud-info h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🎓</div>
+        <h1>CLASS VISION</h1>
+        <p class="subtitle">Cloud-Based Attendance Management System</p>
+        
+        <div class="warning">
+            <h3>⚠️ Cloud Version Limitations</h3>
+            <p>This is a cloud-friendly version without camera access. For full functionality with face recognition, use the local version.</p>
+        </div>
+        
+        <div class="cloud-info">
+            <h3>☁️ Cloud Features Available:</h3>
+            <p>✅ Student registration (manual)</p>
+            <p>✅ Manual attendance marking</p>
+            <p>✅ Attendance reports and analytics</p>
+            <p>✅ Data export functionality</p>
+        </div>
+        
+        <div class="menu-grid">
+            <a href="/register" class="menu-item">
+                <span class="icon">👤</span>
+                <h3>Register Student</h3>
+                <p>Add new students to the system manually</p>
+            </a>
+            
+            <a href="/attendance" class="menu-item">
+                <span class="icon">📝</span>
+                <h3>Mark Attendance</h3>
+                <p>Manually mark attendance for students</p>
+            </a>
+            
+            <a href="/view_attendance" class="menu-item">
+                <span class="icon">📊</span>
+                <h3>View Attendance</h3>
+                <p>View and analyze attendance records</p>
+            </a>
+        </div>
+        
+        <div class="status">
+            <h4>System Status</h4>
+            <p>✅ Cloud application running</p>
+            <p>✅ Database accessible</p>
+            <p>⚠️ Camera access not available (cloud limitation)</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -4,104 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Management System</title>
+    <link rel="stylesheet" href="/static/style.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 100vh;
         }
         
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            text-align: center;
-            max-width: 800px;
-            width: 90%;
-        }
-        
-        .logo {
-            font-size: 3rem;
-            color: #4a5568;
-            margin-bottom: 10px;
+            max-width: 1000px;
         }
         
         h1 {
             color: #2d3748;
             margin-bottom: 20px;
-            font-size: 2.5rem;
+            font-size: 3rem;
+            font-weight: 700;
         }
         
         .subtitle {
             color: #718096;
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-        }
-        
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-        
-        .menu-item {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .menu-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .menu-item h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .menu-item p {
-            opacity: 0.9;
-            font-size: 1rem;
-        }
-        
-        .icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            display: block;
-        }
-        
-        .status {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f7fafc;
-            border-radius: 10px;
-            border-left: 4px solid #48bb78;
-        }
-        
-        .status h4 {
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
-        
-        .status p {
-            color: #718096;
-            margin: 5px 0;
+            font-size: 1.3rem;
+            margin-bottom: 50px;
+            font-weight: 400;
         }
     </style>
 </head>
@@ -131,12 +58,7 @@
             </a>
         </div>
         
-        <div class="status">
-            <h4>System Status</h4>
-            <p>✅ Web application running on localhost:5000</p>
-            <p>✅ Face recognition system ready</p>
-            <p>✅ Camera access available</p>
-        </div>
     </div>
+    <script src="/static/animations.js"></script>
 </body>
 </html>

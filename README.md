@@ -281,3 +281,4 @@ If you encounter any issues or have questions:
 **Made with ❤️ for educational institutions worldwide**
 
 *For more information, visit our [GitHub repository](https://github.com/yourusername/attendance-management-system)*
+
